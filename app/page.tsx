@@ -18,9 +18,7 @@ export default function Home() {
     try {
       const response = await fetch('/api/process', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ words })
       })
 
@@ -40,9 +38,7 @@ export default function Home() {
 
   const handleEditCard = (updatedCard: Flashcard) => {
     setFlashcards(cards =>
-      cards.map(card =>
-        card.id === updatedCard.id ? updatedCard : card
-      )
+      cards.map(card => card.id === updatedCard.id ? updatedCard : card)
     )
   }
 
@@ -56,70 +52,91 @@ export default function Home() {
   }
 
   return (
-    <main className="min-h-screen py-12 px-4">
-      <div className="max-w-6xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-800 mb-4">
-            中文词汇卡片生成器
-          </h1>
-          <p className="text-lg text-gray-600">
-            输入中文词汇，自动生成带图片的教学幻灯片
-          </p>
+    <main className="min-h-screen bg-[var(--bg-dark)]">
+      {/* Header */}
+      <header className="border-b border-[var(--border)]">
+        <div className="max-w-[980px] mx-auto px-6 py-4">
+          <nav className="flex items-center justify-between">
+            <span className="text-[var(--text-primary)] font-medium">词卡生成器</span>
+            {flashcards.length > 0 && (
+              <span className="text-sm text-[var(--text-secondary)]">
+                {flashcards.length} 张词卡
+              </span>
+            )}
+          </nav>
         </div>
+      </header>
 
-        {/* Main content */}
+      <div className="max-w-[980px] mx-auto px-6">
         {flashcards.length === 0 ? (
-          <div>
+          <div className="py-20 animate-fade-up">
+            {/* Hero */}
+            <div className="text-center mb-16">
+              <h1 className="text-[56px] font-semibold text-[var(--text-primary)] leading-tight mb-6">
+                中文词卡
+              </h1>
+              <p className="text-[21px] text-[var(--text-secondary)] max-w-[600px] mx-auto leading-relaxed">
+                输入词汇，自动生成拼音、翻译和图片。<br />
+                一键导出 PowerPoint，用于课堂教学。
+              </p>
+            </div>
+
+            {/* Input */}
             <WordInput onSubmit={handleSubmit} isLoading={isLoading} />
 
             {error && (
-              <div className="mt-6 max-w-2xl mx-auto">
-                <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
-                  {error}
-                </div>
+              <div className="mt-8 text-center">
+                <p className="text-[#ef4444] text-[15px]">{error}</p>
               </div>
             )}
 
-            {/* Instructions */}
-            <div className="mt-12 max-w-2xl mx-auto">
-              <h2 className="text-xl font-medium text-gray-800 mb-4">
-                使用说明
-              </h2>
-              <div className="bg-gray-50 rounded-lg p-6 space-y-3 text-gray-600">
-                <p>1. 在文本框中输入中文词汇，每行一个词或用逗号分隔</p>
-                <p>2. 点击"生成词卡"按钮，系统会自动：</p>
-                <ul className="list-disc list-inside ml-4 space-y-1">
-                  <li>为每个词汇生成拼音</li>
-                  <li>查找英文翻译</li>
-                  <li>搜索相关图片</li>
-                </ul>
-                <p>3. 预览词卡，可以点击卡片翻转查看正反面</p>
-                <p>4. 如需修改，可以编辑拼音、翻译或图片</p>
-                <p>5. 点击"导出为 PowerPoint"下载幻灯片文件</p>
+            {/* Features */}
+            <div className="mt-24 grid grid-cols-3 gap-8">
+              <div className="card-dark p-8 text-center">
+                <div className="w-12 h-12 mx-auto mb-4 rounded-full bg-[var(--accent)] flex items-center justify-center">
+                  <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                </div>
+                <h3 className="text-[17px] font-medium text-[var(--text-primary)] mb-2">智能配图</h3>
+                <p className="text-[15px] text-[var(--text-secondary)] leading-relaxed">
+                  自动搜索匹配的高清图片
+                </p>
+              </div>
+              <div className="card-dark p-8 text-center">
+                <div className="w-12 h-12 mx-auto mb-4 rounded-full bg-[var(--accent)] flex items-center justify-center">
+                  <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10" />
+                  </svg>
+                </div>
+                <h3 className="text-[17px] font-medium text-[var(--text-primary)] mb-2">精准拼音</h3>
+                <p className="text-[15px] text-[var(--text-secondary)] leading-relaxed">
+                  支持声调，正确处理多音字
+                </p>
+              </div>
+              <div className="card-dark p-8 text-center">
+                <div className="w-12 h-12 mx-auto mb-4 rounded-full bg-[var(--accent)] flex items-center justify-center">
+                  <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                  </svg>
+                </div>
+                <h3 className="text-[17px] font-medium text-[var(--text-primary)] mb-2">一键导出</h3>
+                <p className="text-[15px] text-[var(--text-secondary)] leading-relaxed">
+                  生成标准 PowerPoint 文件
+                </p>
               </div>
             </div>
           </div>
         ) : (
-          <div>
-            {/* Action bar */}
-            <div className="flex justify-between items-center mb-8">
+          <div className="py-12 animate-fade-up">
+            {/* Actions */}
+            <div className="flex items-center justify-between mb-12">
               <button
                 onClick={handleReset}
-                className="text-gray-600 hover:text-gray-800 flex items-center gap-2"
+                className="btn-ghost flex items-center gap-2"
               >
-                <svg
-                  className="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M10 19l-7-7m0 0l7-7m-7 7h18"
-                  />
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                 </svg>
                 重新开始
               </button>
@@ -127,41 +144,36 @@ export default function Home() {
               <ExportButton flashcards={flashcards} />
             </div>
 
-            {/* Flashcard grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 justify-items-center">
+            {/* Cards grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 stagger">
               {flashcards.map(card => (
-                <div key={card.id} className="relative">
+                <div key={card.id} className="relative group opacity-0 animate-fade-up">
                   <FlashcardPreview card={card} onEdit={handleEditCard} />
                   <button
                     onClick={() => handleDeleteCard(card.id)}
-                    className="absolute -top-2 -right-2 w-8 h-8 bg-red-500 text-white rounded-full flex items-center justify-center hover:bg-red-600 shadow-md"
-                    title="删除此卡片"
+                    className="absolute -top-2 -right-2 w-7 h-7 bg-[#ef4444] text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200"
                   >
-                    <svg
-                      className="w-4 h-4"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M6 18L18 6M6 6l12 12"
-                      />
+                    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                     </svg>
                   </button>
                 </div>
               ))}
             </div>
 
-            {/* Export section at bottom */}
-            <div className="mt-12 pt-8 border-t">
+            {/* Bottom export */}
+            <div className="mt-16 pt-12 border-t border-[var(--border)] text-center">
+              <p className="text-[var(--text-secondary)] mb-6">准备好了？</p>
               <ExportButton flashcards={flashcards} />
             </div>
           </div>
         )}
       </div>
+
+      {/* Footer */}
+      <footer className="mt-20 py-8 text-center text-[13px] text-[var(--text-muted)]">
+        为中文教师设计
+      </footer>
     </main>
   )
 }

@@ -13,7 +13,6 @@ export default function WordInput({ onSubmit, isLoading }: WordInputProps) {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
 
-    // Parse input: split by newlines, commas, or Chinese comma
     const words = input
       .split(/[\n,，、]+/)
       .map(word => word.trim())
@@ -30,66 +29,54 @@ export default function WordInput({ onSubmit, isLoading }: WordInputProps) {
     setInput(exampleWords)
   }
 
+  const wordCount = input
+    .split(/[\n,，、]+/)
+    .map(word => word.trim())
+    .filter(word => word.length > 0).length
+
   return (
-    <form onSubmit={handleSubmit} className="w-full max-w-2xl mx-auto">
-      <div className="mb-4">
-        <label
-          htmlFor="words"
-          className="block text-lg font-medium text-gray-700 mb-2"
-        >
-          输入中文词汇
-        </label>
-        <p className="text-sm text-gray-500 mb-2">
-          每行一个词，或用逗号分隔
-        </p>
+    <form onSubmit={handleSubmit} className="max-w-[680px] mx-auto">
+      <div className="relative">
         <textarea
-          id="words"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder="公共汽车&#10;学校&#10;老师&#10;..."
-          className="w-full h-64 p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none text-lg"
+          placeholder="输入中文词汇，每行一个..."
+          className="input-dark w-full h-[240px] resize-none text-[17px] leading-relaxed"
           disabled={isLoading}
         />
+
+        {isLoading && (
+          <div className="absolute inset-0 bg-[var(--bg-dark)]/90 backdrop-blur-sm rounded-2xl flex items-center justify-center">
+            <div className="flex flex-col items-center gap-4">
+              <div className="spinner w-8 h-8"></div>
+              <span className="text-[15px] text-[var(--text-secondary)]">正在生成词卡...</span>
+            </div>
+          </div>
+        )}
+
+        {wordCount > 0 && !isLoading && (
+          <div className="absolute bottom-4 right-4 text-[13px] text-[var(--text-muted)]">
+            {wordCount} 个词汇
+          </div>
+        )}
       </div>
 
-      <div className="flex gap-3">
+      <div className="mt-6 flex items-center justify-center gap-4">
         <button
           type="submit"
           disabled={isLoading || !input.trim()}
-          className="flex-1 bg-blue-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+          className="btn-primary min-w-[140px]"
         >
-          {isLoading ? (
-            <span className="flex items-center justify-center gap-2">
-              <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
-                <circle
-                  className="opacity-25"
-                  cx="12"
-                  cy="12"
-                  r="10"
-                  stroke="currentColor"
-                  strokeWidth="4"
-                  fill="none"
-                />
-                <path
-                  className="opacity-75"
-                  fill="currentColor"
-                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                />
-              </svg>
-              处理中...
-            </span>
-          ) : (
-            '生成词卡'
-          )}
+          生成词卡
         </button>
 
         <button
           type="button"
           onClick={fillExample}
           disabled={isLoading}
-          className="px-6 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          className="btn-ghost"
         >
-          示例词汇
+          填入示例
         </button>
       </div>
     </form>
