@@ -1,0 +1,6 @@
+<svg width="400" height="300" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="300" fill="#F3F4F6"/>
+  <path d="M200 110C216.569 110 230 123.431 230 140C230 156.569 216.569 170 200 170C183.431 170 170 156.569 170 140C170 123.431 183.431 110 200 110Z" fill="#D1D5DB"/>
+  <path d="M130 230C130 200.729 153.729 177 183 177H217C246.271 177 270 200.729 270 230V230H130V230Z" fill="#D1D5DB"/>
+  <text x="200" y="260" text-anchor="middle" fill="#9CA3AF" font-family="Arial" font-size="14">图片未找到</text>
+</svg>
